@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+{% block title %}monshi aziz{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Salam</h1><p class="muted">کل دارایت</p></div>
+<a class="btn primary" href="{% url 'employee_create' %}">بنده خدا جدید +</a></div>
+<div class="stats">
+<div class="stat"><span>کل بنده خداها</span><strong>{{ total }}</strong></div>
+<div class="stat"><span>بنده خدا های فعال</span><strong>{{ active }}</strong></div>
+<div class="stat"><span>بنده خدا های شمال رفته </span><strong>{{ leave }}</strong></div>
+<div class="stat"><span>بنده خدا های پیر بیرون رفته</span><strong>{{ retired }}</strong></div>
+</div>
+<div class="stats">
+
+
+</div>
+<div class="panel">
+<div class="panel-head"><h2>جدید ترین ها </h2><a href="{% url 'employee_list' %}"> همه</a></div>
+<div class="table-wrap"><table><thead><tr><th>کد</th><th>نام</th><th>سن</th><th>درجه</th><th>وضعیت</th><th></th></tr></thead>
+<tbody>{% for e in recent %}<tr><td>{{ e.personnel_code }}</td><td>{{ e.full_name }}</td><td>{{ e.age }}</td><td>{{ e.rank }}</td><td>{{ e.get_status_display }}</td><td><a class="btn small" href="{% url 'employee_detail' e.pk %}">پرونده</a></td></tr>
+{% empty %}<tr><td colspan="6" class="empty">والا که کسی نیست.</td></tr>{% endfor %}</tbody></table></div>
+</div>
+{% endblock %}

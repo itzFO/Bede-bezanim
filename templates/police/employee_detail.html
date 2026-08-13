@@ -1,0 +1,26 @@
+
+{% extends "base.html" %}
+{% block title %}زندگی نامه {{ employee.full_name }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>{{ employee.full_name }}</h1><p class="muted">پرونده شماره {{ employee.personnel_code }}</p></div>
+<div><a class="btn" href="{% url 'employee_edit' employee.pk %}">ویرایش</a> <a class="btn danger-outline" href="{% url 'employee_delete' employee.pk %}">حذف</a></div></div>
+<div class="detail-grid">
+<div class="detail-card"><span>کد </span><strong>{{ employee.personnel_code }}</strong></div>
+<div class="detail-card"><span>سن</span><strong>{{ employee.age }} سال</strong></div>
+<div class="detail-card"><span>درجه</span><strong>{{ employee.rank }}</strong></div>
+<div class="detail-card"><span>وضعیت</span><strong>{{ employee.get_status_display }}</strong></div>
+<div class="detail-card"><span> چند ساله پیش ماست</span><strong>{{ employee.service_years }} سال و {{ employee.service_months }} ماه</strong></div>
+<div class="detail-card"><span>گروه</span><strong>{{ employee.unit|default:"-" }}</strong></div>
+<div class="detail-card"><span>سمت</span><strong>{{ employee.position|default:"-" }}</strong></div>
+<div class="detail-card"><span>تلفن</span><strong>{{ employee.phone|default:"-" }}</strong></div>
+</div>
+<div class="panel"><h2>سابقه کاری </h2>
+<form method="post" action="{% url 'service_record_add' employee.pk %}" class="filters">
+{% csrf_token %}{{ record_form.title }}{{ record_form.from_date }}{{ record_form.to_date }}<button class="btn primary">افزودن سابقه</button>
+</form>
+<div class="table-wrap"><table><thead><tr><th>لقب</th><th>از</th><th>تا</th><th>توضیح</th><th></th></tr></thead><tbody>
+{% for record in employee.service_records.all %}<tr><td>{{ record.title }}</td><td>{{ record.from_date }}</td><td>{{ record.to_date|default:"-" }}</td><td>{{ record.description|default:"-" }}</td><td><form method="post" action="{% url 'service_record_delete' record.pk %}">{% csrf_token %}<button class="btn small danger">حذف</button></form></td></tr>
+{% empty %}<tr><td colspan="5" class="empty">سابقه‌ای نداره</td></tr>{% endfor %}
+</tbody></table></div></div>
+<div class="panel"><h2>چیزایی که گفتن به ما</h2><p>{{ employee.notes|default:"والا به ما چیزی نگفتن"|linebreaksbr }}</p><p class="muted">API JSON: <a href="{% url 'employee_json' employee.pk %}">مشاهده داده ساختاریافته</a></p></div>
+{% endblock %}

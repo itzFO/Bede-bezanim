@@ -1,0 +1,35 @@
+{% load static %}
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %} عجب سایتیم من {% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header class="topbar">
+  <div class="container nav">
+    <a class="brand" href="{% url 'dashboard' %}"><span class="brand-mark">پ</span>عجب سایتیم من  </a>
+    {% if user.is_authenticated %}
+    <nav>
+      <a href="{% url 'dashboard' %}">محل برنامس</a>
+      <a href="{% url 'employee_list' %}">بنده خدا های زحمت کش</a>
+      <a href="{% url 'employee_create' %}" class="nav-add">+ اضافه کردن بنده خدا های زحمت کش </a>
+      <a href="{% url 'logout' %}">فرار</a>
+    </nav>
+    {% endif %}
+  </div>
+</header>
+
+<main class="container page">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+<footer>  من همه شناسه های بنده خدا های زحمت کش مدیریت میکنم   • Django</footer>
+</body>
+</html>
